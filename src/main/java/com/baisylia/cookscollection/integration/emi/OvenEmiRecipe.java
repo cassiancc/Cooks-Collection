@@ -6,13 +6,14 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.world.item.crafting.Ingredient;
+import vectorwing.farmersdelight.common.utility.RecipeUtils;
 
 import java.util.ArrayList;
 
 public class OvenEmiRecipe extends AbstractOvenRecipe {
 
     public OvenEmiRecipe(OvenRecipe recipe) {
-        super(recipe.getId(), getIngredients(recipe), recipe.getResultItem(), recipe.getCookTime());
+        super(recipe.getId(), getIngredients(recipe), RecipeUtils.getResultItem(recipe), recipe.getCookTime());
     }
 
     private static ArrayList<EmiIngredient> getIngredients(OvenRecipe recipe) {

@@ -32,11 +32,11 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.antlr.v4.runtime.misc.NotNull;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 import static com.baisylia.cookscollection.block.custom.OvenBlock.LIT;
@@ -274,10 +274,10 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
             for (int i = 0; i < 9; ++i) {
                 entity.itemHandler.extractItem(i, 1, false);
             }
-            inventory.getItem(9).is(shapedMatch.get().getResultItem().getItem());
+            inventory.getItem(9).is(shapedMatch.get().getResultItem(entity.level.registryAccess()).getItem());
 
-            entity.itemHandler.setStackInSlot(9, new ItemStack(shapedMatch.get().getResultItem().getItem(),
-                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(shapedMatch.get().getResultItem())));
+            entity.itemHandler.setStackInSlot(9, new ItemStack(shapedMatch.get().getResultItem(entity.level.registryAccess()).getItem(),
+                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(shapedMatch.get().getResultItem(entity.level.registryAccess()))));
 
             entity.resetProgress();
 
@@ -296,10 +296,10 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
             for (int i = 0; i < 9; ++i) {
                 entity.itemHandler.extractItem(i, 1, false);
             }
-            inventory.getItem(9).is(recipeMatch.get().getResultItem().getItem());
+            inventory.getItem(9).is(recipeMatch.get().getResultItem(entity.level.registryAccess()).getItem());
 
-            entity.itemHandler.setStackInSlot(9, new ItemStack(recipeMatch.get().getResultItem().getItem(),
-                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(recipeMatch.get().getResultItem())));
+            entity.itemHandler.setStackInSlot(9, new ItemStack(recipeMatch.get().getResultItem(entity.level.registryAccess()).getItem(),
+                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(recipeMatch.get().getResultItem(entity.level.registryAccess()))));
 
             entity.resetProgress();
         }

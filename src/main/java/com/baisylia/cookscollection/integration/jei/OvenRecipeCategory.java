@@ -19,9 +19,11 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import vectorwing.farmersdelight.common.utility.RecipeUtils;
 
 public class OvenRecipeCategory implements IRecipeCategory<OvenRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(CooksCollection.MOD_ID, "baking");
@@ -48,13 +50,13 @@ public class OvenRecipeCategory implements IRecipeCategory<OvenRecipe> {
     }
 
     @Override
-    public void draw(OvenRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
+    public void draw(OvenRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         IDrawableAnimated arrow = getArrow(recipe);
-        arrow.draw(poseStack, 63, 19);
-        drawCookTime(recipe, poseStack, 45);
+        arrow.draw(graphics, 63, 19);
+        drawCookTime(recipe, graphics, 45);
     }
 
-    protected void drawCookTime(OvenRecipe recipe, PoseStack poseStack, int y) {
+    protected void drawCookTime(OvenRecipe recipe, GuiGraphics graphics, int y) {
         int cookTime = recipe.getCookTime();
         if (cookTime > 0) {
             int cookTimeSeconds = cookTime / 20;
@@ -62,7 +64,7 @@ public class OvenRecipeCategory implements IRecipeCategory<OvenRecipe> {
             Minecraft minecraft = Minecraft.getInstance();
             Font fontRenderer = minecraft.font;
             int stringWidth = fontRenderer.width(timeString);
-            fontRenderer.draw(poseStack, timeString, getWidth() - stringWidth, y, 0xFF808080);
+            graphics.drawString(fontRenderer, timeString, getWidth() - stringWidth, y, 0xFF808080);
         }
     }
 
@@ -117,6 +119,6 @@ public class OvenRecipeCategory implements IRecipeCategory<OvenRecipe> {
                                     if (recipe.getIngredients().size() > 8) {
                                         builder.addSlot(RecipeIngredientRole.INPUT, start+offset2, start+offset2).addIngredients(recipe.getIngredients().get(8));
         }}}}}}}}
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 97, 21).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 97, 21).addItemStack(RecipeUtils.getResultItem(recipe));
     }
 }

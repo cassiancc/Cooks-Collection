@@ -7,6 +7,8 @@ import com.google.gson.*;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -61,7 +63,7 @@ public class OvenShapedRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return output.copy();
     }
 
@@ -76,7 +78,7 @@ public class OvenShapedRecipe implements Recipe<SimpleContainer> {
 
     public boolean matches(SimpleContainer pContainer, Level pLevel) {
         ItemStack outputSlot = pContainer.getItem(9);
-        if (!outputSlot.isEmpty() && !ItemStack.isSame(this.getResultItem(), outputSlot)) {
+        if (!outputSlot.isEmpty() && !ItemStack.isSameItem(this.getResultItem(pLevel.registryAccess()), outputSlot)) {
             return false;
         }
 
@@ -147,7 +149,7 @@ public class OvenShapedRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer p_44001_) {
+    public ItemStack assemble(SimpleContainer p_44001_, RegistryAccess registryAccess) {
         return output;
     }
 
@@ -318,7 +320,7 @@ public class OvenShapedRecipe implements Recipe<SimpleContainer> {
 
     public static Item itemFromJson(JsonObject p_151279_) {
         String s = GsonHelper.getAsString(p_151279_, "item");
-        Item item = Registry.ITEM.getOptional(new ResourceLocation(s)).orElseThrow(() -> {
+        Item item = BuiltInRegistries.ITEM.getOptional(new ResourceLocation(s)).orElseThrow(() -> {
             return new JsonSyntaxException("Unknown item '" + s + "'");
         });
         if (item == Items.AIR) {
@@ -366,7 +368,7 @@ public class OvenShapedRecipe implements Recipe<SimpleContainer> {
                 ingredient.toNetwork(buf);
             }
 
-            buf.writeItem(recipe.getResultItem());
+            buf.writeItem(recipe.output);
             buf.writeVarInt(recipe.cookTime);
         }
     }

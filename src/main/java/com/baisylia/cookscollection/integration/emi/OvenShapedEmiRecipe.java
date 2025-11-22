@@ -8,6 +8,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.world.item.crafting.Ingredient;
+import vectorwing.farmersdelight.common.utility.RecipeUtils;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class OvenShapedEmiRecipe extends AbstractOvenRecipe {
     private final int width;
 
     public OvenShapedEmiRecipe(OvenShapedRecipe recipe) {
-        super(recipe.getId(), padIngredients(recipe), recipe.getResultItem(), recipe.getCookTime());
+        super(recipe.getId(), padIngredients(recipe), RecipeUtils.getResultItem(recipe), recipe.getCookTime());
         this.height = recipe.getHeight();
         this.width = recipe.getWidth();
         this.ingredients = recipe.getIngredients();

@@ -12,7 +12,6 @@ import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiRenderable;
 import dev.emi.emi.api.stack.EmiStack;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 
 @EmiEntrypoint
@@ -25,8 +24,7 @@ public class EMIModestMiningPlugin implements EmiPlugin {
 
     private static EmiRenderable simplifiedRenderer(int u, int v) {
         return (draw, x, y, delta) -> {
-            RenderSystem.setShaderTexture(0, TEXTURE);
-            GuiComponent.blit(draw, x, y, u, v, 124, 58, 124, 58);
+            draw.blit(TEXTURE, x, y, u, v, 124, 58, 124, 58);
         };
     }
 

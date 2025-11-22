@@ -19,9 +19,11 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import vectorwing.farmersdelight.common.utility.RecipeUtils;
 
 public class OvenShapedRecipeCategory implements IRecipeCategory<OvenShapedRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(CooksCollection.MOD_ID, "baking_shaped");
@@ -49,13 +51,13 @@ public class OvenShapedRecipeCategory implements IRecipeCategory<OvenShapedRecip
     }
 
     @Override
-    public void draw(OvenShapedRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
+    public void draw(OvenShapedRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         IDrawableAnimated arrow = getArrow(recipe);
-        arrow.draw(poseStack, 63, 19);
-        drawCookTime(recipe, poseStack, 45);
+        arrow.draw(guiGraphics, 63, 19);
+        drawCookTime(recipe, guiGraphics, 45);
     }
 
-    protected void drawCookTime(OvenShapedRecipe recipe, PoseStack poseStack, int y) {
+    protected void drawCookTime(OvenShapedRecipe recipe, GuiGraphics guiGraphics, int y) {
         int cookTime = recipe.getCookTime();
         if (cookTime > 0) {
             int cookTimeSeconds = cookTime / 20;
@@ -63,7 +65,7 @@ public class OvenShapedRecipeCategory implements IRecipeCategory<OvenShapedRecip
             Minecraft minecraft = Minecraft.getInstance();
             Font fontRenderer = minecraft.font;
             int stringWidth = fontRenderer.width(timeString);
-            fontRenderer.draw(poseStack, timeString, getWidth() - stringWidth, y, 0xFF808080);
+            guiGraphics.drawString(fontRenderer, timeString, getWidth() - stringWidth, y, 0xFF808080);
         }
     }
 
@@ -109,6 +111,6 @@ public class OvenShapedRecipeCategory implements IRecipeCategory<OvenShapedRecip
         }
 
         // Add output slot
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 97, 21).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 97, 21).addItemStack(RecipeUtils.getResultItem(recipe));
     }
 }
