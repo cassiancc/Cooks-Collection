@@ -15,7 +15,7 @@ import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.resources.ResourceLocation;
 
 @EmiEntrypoint
-public class EMIModestMiningPlugin implements EmiPlugin {
+public class EMICooksCollectionPlugin implements EmiPlugin {
 
     static final ResourceLocation TEXTURE = new ResourceLocation(CooksCollection.MOD_ID, "textures/gui/oven_gui_jei.png");
 
