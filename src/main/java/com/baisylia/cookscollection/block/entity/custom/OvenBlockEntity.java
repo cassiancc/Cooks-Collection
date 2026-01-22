@@ -241,7 +241,7 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider, Worldl
 
         if (entity.currentRecipe != null) {
             if (entity.currentRecipe.matches(inventory, level)) {
-                return canInsertItemIntoOutput(inventory, entity.currentRecipe.getResultItem());
+                return canInsertItemIntoOutput(inventory, entity.currentRecipe.getResultItem(level.registryAccess()));
             }
         }
 
@@ -255,13 +255,13 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider, Worldl
 
         if (shapedMatch.isPresent()) {
             entity.currentRecipe = shapedMatch.get();
-            if (canInsertItemIntoOutput(inventory, shapedMatch.get().getResultItem())) {
+            if (canInsertItemIntoOutput(inventory, shapedMatch.get().getResultItem(level.registryAccess()))) {
                 entity.maxProgress = shapedMatch.get().getCookTime();
                 return true;
             }
         } else if (recipeMatch.isPresent()) {
             entity.currentRecipe = recipeMatch.get();
-            if (canInsertItemIntoOutput(inventory, recipeMatch.get().getResultItem())) {
+            if (canInsertItemIntoOutput(inventory, recipeMatch.get().getResultItem(level.registryAccess()))) {
                 entity.maxProgress = recipeMatch.get().getCookTime();
                 return true;
             }
@@ -289,11 +289,11 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider, Worldl
     private static void craftItem(OvenBlockEntity entity) {
         Recipe<?> recipe = entity.currentRecipe;
 
-        if (recipe == null) {
+        if (recipe == null || entity.level == null) {
             return;
         }
 
-        ItemStack resultItem = recipe.getResultItem();
+        ItemStack resultItem = recipe.getResultItem(entity.level.registryAccess());
 
         // Handle by-products (empty buckets, etc.)
         for(int i = 0; i < 9; ++i) {
