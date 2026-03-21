@@ -12,7 +12,7 @@
     "hidden": false
   },
   "criteria": {
-    "pickle": {
+    "salt": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [

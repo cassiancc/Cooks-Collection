@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "cookscollection:sunflower_seeds"
+    {
+      "id": "cookscollection:sunflower_seeds",
+      "required": false
+    }
   ]
 }

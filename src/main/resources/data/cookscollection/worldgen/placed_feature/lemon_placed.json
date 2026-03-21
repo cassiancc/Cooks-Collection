@@ -1,31 +1,47 @@
 {
-  "feature": "cookscollection:salt",
+  "feature": "cookscollection:lemon",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 16
+      "count": {
+        "type": "minecraft:weighted_list",
+        "distribution": [
+          {
+            "data": 0,
+            "weight": 9
+          },
+          {
+            "data": 1,
+            "weight": 1
+          }
+        ]
+      }
     },
     {
       "type": "minecraft:in_square"
     },
     {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "minecraft:uniform",
-        "min_inclusive": {
-          "absolute": -64
-        },
-        "max_inclusive": {
-          "absolute": 320
-        }
-      }
+      "type": "minecraft:surface_water_depth_filter",
+      "max_water_depth": 0
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR"
     },
     {
       "type": "minecraft:biome"
     },
     {
-      "type": "minecraft:biome",
-      "tag": "minecraft:is_overworld"
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:would_survive",
+        "state": {
+          "Name": "cookscollection:lemon_sapling",
+          "Properties": {
+            "stage": "0"
+          }
+        }
+      }
     }
   ]
 }
