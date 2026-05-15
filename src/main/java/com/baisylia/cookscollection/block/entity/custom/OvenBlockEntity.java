@@ -276,7 +276,7 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider, Worldl
     static boolean isFueled(OvenBlockEntity entity, BlockPos pos, Level level) {
         BlockState stateBelow = level.getBlockState(pos.below());
         if (stateBelow.hasProperty(BlockStateProperties.LIT) ? stateBelow.getValue(BlockStateProperties.LIT) : true) {
-            if (stateBelow.is(ModTags.HEAT_SOURCES) || stateBelow.is(ModTags.HEAT_CONDUCTORS)) {
+            if (stateBelow.is(ModTags.Blocks.HEAT_SOURCES) || stateBelow.is(ModTags.Blocks.HEAT_CONDUCTORS)) {
                 level.setBlock(pos, entity.getBlockState().setValue(LIT, Boolean.TRUE), 3);
                 return true;
             }

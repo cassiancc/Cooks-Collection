@@ -50,11 +50,11 @@ public class RusticLoafBlock extends Block {
     public RusticLoafBlock(BlockBehaviour.Properties properties, Supplier<Item> pieSlice) {
         super(properties);
         this.pieSlice = pieSlice;
-        this.registerDefaultState((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue(FACING, Direction.NORTH)).setValue(BITES, 0));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BITES, 0));
     }
 
     public ItemStack getPieSliceItem() {
-        return new ItemStack((ItemLike)this.pieSlice.get());
+        return new ItemStack(this.pieSlice.get());
     }
 
     public int getMaxBites() {
@@ -84,13 +84,13 @@ public class RusticLoafBlock extends Block {
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return (BlockState)this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack heldStack = player.getItemInHand(hand);
         if (level.isClientSide) {
-            if (heldStack.is(ModTags.KNIVES)) {
+            if (heldStack.is(ModTags.Items.KNIVES)) {
                 return this.cutSlice(level, pos, state);
             }
 
@@ -103,7 +103,7 @@ public class RusticLoafBlock extends Block {
             }
         }
 
-        return heldStack.is(ModTags.KNIVES) ? this.cutSlice(level, pos, state) : this.consumeBite(level, pos, state, player);
+        return heldStack.is(ModTags.Items.KNIVES) ? this.cutSlice(level, pos, state) : this.consumeBite(level, pos, state, player);
     }
 
     protected InteractionResult consumeBite(Level level, BlockPos pos, BlockState state, Player playerIn) {
@@ -115,34 +115,34 @@ public class RusticLoafBlock extends Block {
             playerIn.getFoodData().eat(sliceStack.getItem(), sliceStack);
             if (this.getPieSliceItem().getItem().isEdible() && sliceFood != null) {
                 for(Pair<MobEffectInstance, Float> pair : sliceFood.getEffects()) {
-                    if (!level.isClientSide && pair.getFirst() != null && level.random.nextFloat() < (Float)pair.getSecond()) {
-                        playerIn.addEffect(new MobEffectInstance((MobEffectInstance)pair.getFirst()));
+                    if (!level.isClientSide && pair.getFirst() != null && level.random.nextFloat() < pair.getSecond()) {
+                        playerIn.addEffect(new MobEffectInstance(pair.getFirst()));
                     }
                 }
             }
 
-            int bites = (Integer)state.getValue(BITES);
+            int bites = state.getValue(BITES);
             if (bites < this.getMaxBites() - 1) {
-                level.setBlock(pos, (BlockState)state.setValue(BITES, bites + 1), 3);
+                level.setBlock(pos, state.setValue(BITES, bites + 1), 3);
             } else {
                 level.removeBlock(pos, false);
             }
 
-            level.playSound((Player)null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.8F, 0.8F);
+            level.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.8F, 0.8F);
             return InteractionResult.SUCCESS;
         }
     }
 
     protected InteractionResult cutSlice(Level level, BlockPos pos, BlockState state) {
-        int bites = (Integer)state.getValue(BITES);
+        int bites = state.getValue(BITES);
         if (bites < this.getMaxBites() - 1) {
-            level.setBlock(pos, (BlockState)state.setValue(BITES, bites + 1), 3);
+            level.setBlock(pos, state.setValue(BITES, bites + 1), 3);
         } else {
             level.removeBlock(pos, false);
         }
 
-        Containers.dropItemStack(level, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), this.getPieSliceItem());
-        level.playSound((Player)null, pos, SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 0.8F, 0.8F);
+        Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), this.getPieSliceItem());
+        level.playSound(null, pos, SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 0.8F, 0.8F);
         return InteractionResult.SUCCESS;
     }
 
@@ -155,11 +155,11 @@ public class RusticLoafBlock extends Block {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(new Property[]{FACING, BITES});
+        builder.add(FACING, BITES);
     }
 
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
-        return this.getMaxBites() - (Integer)blockState.getValue(BITES);
+        return this.getMaxBites() - blockState.getValue(BITES);
     }
 
     public boolean hasAnalogOutputSignal(BlockState state) {
